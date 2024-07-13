@@ -24,7 +24,6 @@ Para abrir o arquivo .brM3, visite este link.
 
 ```bash
 yarn run-sql
-
 ```
 
 ## Como executar
@@ -36,14 +35,12 @@ yarn run-sql
 
      ```bash
     yarn start
-
     ```
   5. Iniciar o Frontend
      Navegue até a pasta 'frontend' e execute:
 
      ```bash
     yarn start
-
     ```
 
 ## Autora
