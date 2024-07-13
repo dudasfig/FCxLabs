@@ -33,15 +33,15 @@ yarn run-sql
   4. Iniciar o Servidor da API
      Navegue até a pasta 'api' e execute:
 
-     ```bash
-    yarn start
-    ```
+```bash
+ yarn start
+ ```
   5. Iniciar o Frontend
      Navegue até a pasta 'frontend' e execute:
 
-     ```bash
-    yarn start
-    ```
+```bash
+yarn start
+ ```
 
 ## Autora
 Este projeto tem fins educativos e foi idealizado por Eduarda Figueredo.
