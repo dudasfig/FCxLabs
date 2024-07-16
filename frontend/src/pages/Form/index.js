@@ -38,8 +38,16 @@ const Edit = ({ getUsers, setOnEdit }) => {
       .join(" ");
   };
 
-  const cpfExists = (cpf, userList) => {
-    return userList.some((user) => user.cpf === cpf);
+  const cpfExists = async (cpf) => {
+    try {
+      const response = await axios.get("http://localhost:8800");
+      const users = response.data;
+      return users.some((user) => user.cpf === cpf);
+    } catch (error) {
+      console.error("Erro ao verificar CPF:", error);
+      toast.error("Erro ao verificar CPF");
+      return false;
+    }
   };
 
   useEffect(() => {
@@ -73,25 +81,32 @@ const Edit = ({ getUsers, setOnEdit }) => {
       status: user.status.value,
     };
 
-    const users = await axios.get("http://localhost:8800");
-
     if (onEdit) {
       await axios
         .put("http://localhost:8800/" + onEdit.cpf, userData)
         .then(({ data }) => {
           toast.success(data);
+          toast.success("Usuário atualizado com sucesso");
           getUsers();
+          navigate("/Home");
         })
         .catch(({ response }) => {
           console.error("Erro na atualização:", response.data);
           toast.error(response.data);
         });
     } else {
+      const cpfAlreadyExists = await cpfExists(userData.cpf);
+      if (cpfAlreadyExists) {
+        toast.error("CPF já cadastrado");
+        user.cpf.value = "";
+        return;
+      }
       await axios
         .post("http://localhost:8800", userData)
         .then(({ data }) => {
           toast.success(data);
           getUsers();
+          navigate("/Home");
         })
         .catch(({ response }) => {
           if (response && response.data) {
@@ -101,12 +116,12 @@ const Edit = ({ getUsers, setOnEdit }) => {
         });
     }
 
-    user.reset();
+    /*user.reset();*/
     setOnEdit(null);
   };
-  const handleForm = () => {
+  /*const handleForm = () => {
     navigate("/Home");
-  };
+  };*/
 
   return (
     <C.FormContainer ref={ref} onSubmit={handleSubmit}>
@@ -153,9 +168,6 @@ const Edit = ({ getUsers, setOnEdit }) => {
           disabled={!!onEdit}
           onChange={(e) => {
             e.target.value = formatCPF(e.target.value);
-            if (cpfExists) {
-              toast.error("CPF ja cadastrado");
-            }
           }}
         />
       </C.InputArea>
@@ -175,7 +187,7 @@ const Edit = ({ getUsers, setOnEdit }) => {
           type="submit"
           onClick={(e) => {
             handleSubmit(e);
-            handleForm();
+            /* handleForm();*/
           }}
         >
           SALVAR

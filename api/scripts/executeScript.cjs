@@ -1,7 +1,5 @@
 const fs = require("fs");
 
-// Use fs aqui no seu código
-
 const mysql = require("mysql2");
 
 const connection = mysql.createConnection({

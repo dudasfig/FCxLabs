@@ -135,12 +135,10 @@ export const updatePassword = (req, res) => {
       return res.status(500).json({ error: "Erro interno do servidor" });
     }
 
-    // Se o CPF não foi encontrado, retorna um erro 404
     if (cpfResult.length === 0) {
       return res.status(404).json({ error: "CPF não encontrado" });
     }
 
-    // Verifica se a nova senha já está cadastrada
     const checkPasswordQuery = "SELECT * FROM usuario WHERE senha = ?";
     bd.query(
       checkPasswordQuery,
@@ -151,12 +149,10 @@ export const updatePassword = (req, res) => {
           return res.status(500).json({ error: "Erro interno do servidor" });
         }
 
-        // Se a nova senha já estiver cadastrada, retorna um erro 400
         if (passwordResult.length > 0) {
           return res.status(400).json({ error: "Senha já cadastrada" });
         }
 
-        // Atualiza a senha se o CPF existir e a senha não estiver cadastrada
         const updateQuery = "UPDATE usuario SET senha = ? WHERE cpf = ?";
         bd.query(updateQuery, [newPassword, cpf], (updateErr) => {
           if (updateErr) {
@@ -164,7 +160,6 @@ export const updatePassword = (req, res) => {
             return res.status(500).json({ error: "Erro interno do servidor" });
           }
 
-          // Retorna uma resposta de sucesso
           return res.status(200).json("Senha atualizada com sucesso.");
         });
       }

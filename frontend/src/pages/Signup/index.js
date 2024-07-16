@@ -61,7 +61,7 @@ const Signup = ({ getUsers }) => {
       if (response.status === 200) {
         toast.success(response.data);
         getUsers();
-        navigate("/"); // Navega para a página de entrada
+        navigate("/");
       }
       user.reset();
     } catch (error) {
